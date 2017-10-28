@@ -14,6 +14,8 @@ BOT_NAME = 'so_jobs'
 SPIDER_MODULES = ['so_jobs.spiders']
 NEWSPIDER_MODULE = 'so_jobs.spiders'
 
+ITEM_PIPELINES = {'so_jobs.pipelines.SQLitePipeline': 300}
+
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'so_jobs (+http://www.yourdomain.com)'

@@ -1,5 +1,6 @@
 import scrapy
-from so_jobs.items import StackJob
+from so_jobs.items import ModelItem
+from so_jobs.pipelines import StackJob
 
 class StackOverflowJobsSpider(scrapy.Spider):
     name = 'so_jobs'
@@ -8,7 +9,9 @@ class StackOverflowJobsSpider(scrapy.Spider):
 
     def parse(self, response):
         for result in response.css('.-job-item'):
-            job = StackJob()
+            # job = StackJob()
+            # job = ModelItem(StackJob())
+            job = ModelItem(StackJob())
             job['company'] = result.css('.-company .-name::text').extract_first()
             job['title'] = result.css('.job-link::text').extract_first()
             job['location'] = result.css('.-company .-location::text').extract_first()
