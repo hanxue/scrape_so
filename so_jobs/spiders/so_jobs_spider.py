@@ -1,4 +1,5 @@
 import scrapy
+from so_jobs.items import StackJob
 
 class StackOverflowJobsSpider(scrapy.Spider):
     name = 'so_jobs'
@@ -7,13 +8,13 @@ class StackOverflowJobsSpider(scrapy.Spider):
 
     def parse(self, response):
         for result in response.css('.-job-item'):
-            yield {
-                'company': result.css('.-company .-name::text').extract_first(),
-                'title': result.css('.job-link::text').extract_first(),
-                'location': result.css('.-company .-location::text').extract_first(),
-                'perks': result.css('.-perks span::text').extract(),
-                'url': result.css('.job-link::attr(href)').extract_first(),
-            }
+            job = StackJob()
+            job['company'] = result.css('.-company .-name::text').extract_first()
+            job['title'] = result.css('.job-link::text').extract_first()
+            job['location'] = result.css('.-company .-location::text').extract_first()
+            job['perks'] = result.css('.-perks span::text').extract()
+            job['url'] = result.css('.job-link::attr(href)').extract_first()
+            yield job
         
         next_page = response.css('.pagination .test-pagination-next::attr(href)').extract_first()
         if next_page is not None:
